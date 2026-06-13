@@ -8,61 +8,46 @@ const openButton = document.getElementById('openButton');
 const closeButton = document.getElementById('closeButton');
 const statusButton = document.getElementById('statusButton');
 
-const labels = {
-  hand: {
-    open: 'РАЗЖАТО',
-    closed: 'СЖАТО',
-    unknown: 'НЕТ ДАННЫХ'
-  },
-  object: {
-    yes: 'ДА',
-    no: 'НЕТ',
-    unknown: 'НЕТ ДАННЫХ'
-  },
-  sensor: {
-    pressed: 'НАЖАТ',
-    released: 'НЕ НАЖАТ',
-    unknown: 'НЕТ ДАННЫХ'
-  }
-};
-
-function setButtons(disabled) {
-  openButton.disabled = disabled;
-  closeButton.disabled = disabled;
-  statusButton.disabled = disabled;
+function translateHand(value) {
+    if (value === 'open') return 'разжата';
+    if (value === 'closed') return 'сжата';
+    return 'неизвестно';
 }
 
-function render(data) {
-  handState.textContent = labels.hand[data.hand] || data.hand || 'НЕТ ДАННЫХ';
-  objectState.textContent = labels.object[data.object] || data.object || 'НЕТ ДАННЫХ';
-  sensorState.textContent = labels.sensor[data.sensor] || data.sensor || 'НЕТ ДАННЫХ';
-  connectionState.textContent = data.connected ? `ARDUINO (${data.port || 'порт найден'})` : 'НЕ ПОДКЛЮЧЕНО';
-  message.textContent = data.message || '';
+function translateObject(value) {
+    if (value === 'yes') return 'да';
+    if (value === 'no') return 'нет';
+    return 'неизвестно';
+}
+
+function translateSensor(value) {
+    if (value === 'pressed') return 'нажат';
+    if (value === 'released') return 'не нажат';
+    return 'неизвестно';
+}
+
+function updateStatus(data) {
+    handState.textContent = translateHand(data.hand);
+    objectState.textContent = translateObject(data.object);
+    sensorState.textContent = translateSensor(data.sensor);
+    connectionState.textContent = data.connected ? `Arduino подключена (${data.port})` : 'нет подключения';
+    message.textContent = data.message || 'ok';
 }
 
 async function request(url, method = 'GET') {
-  setButtons(true);
-  message.textContent = 'Выполняется команда...';
+    message.textContent = 'Выполняется команда...';
 
-  try {
-    const response = await fetch(url, { method });
-    const data = await response.json();
-    render(data);
-  } catch (error) {
-    render({
-      connected: false,
-      hand: 'unknown',
-      object: 'unknown',
-      sensor: 'unknown',
-      message: 'Нет связи с сервером'
-    });
-  } finally {
-    setButtons(false);
-  }
+    try {
+        const response = await fetch(url, { method });
+        const data = await response.json();
+        updateStatus(data);
+    } catch (error) {
+        message.textContent = 'Ошибка соединения с Flask-сервером';
+    }
 }
 
 openButton.addEventListener('click', () => request('/api/open', 'POST'));
 closeButton.addEventListener('click', () => request('/api/close', 'POST'));
 statusButton.addEventListener('click', () => request('/api/status'));
 
-request('/api/status');
+request('/api/last');
