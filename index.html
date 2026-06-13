@@ -1,57 +1,46 @@
 <!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Механическая рука</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Механическая рука</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <main class="page">
-    <section class="card hero">
-      <div>
-        <p class="label">ОВТИС</p>
-        <h1>Управляемая механическая рука</h1>
-        <p class="lead">Веб-интерфейс передаёт команды на Arduino, Arduino управляет сервоприводом и возвращает состояние датчика в ладони.</p>
-      </div>
-    </section>
+    <main class="page">
+        <section class="card">
+            <h1>Управляемая механическая рука</h1>
+            <p class="subtitle">Веб-интерфейс отправляет команды на Arduino через Flask-сервер.</p>
 
-    <section class="grid">
-      <div class="card status-card">
-        <h2>Состояние</h2>
-        <div class="status-row">
-          <span>Рука</span>
-          <strong id="handState">—</strong>
-        </div>
-        <div class="status-row">
-          <span>Объект в руке</span>
-          <strong id="objectState">—</strong>
-        </div>
-        <div class="status-row">
-          <span>Датчик ладони</span>
-          <strong id="sensorState">—</strong>
-        </div>
-        <div class="status-row">
-          <span>Подключение</span>
-          <strong id="connectionState">—</strong>
-        </div>
-        <p id="message" class="message"></p>
-      </div>
+            <div class="status-grid">
+                <div class="status-item">
+                    <span>Состояние руки</span>
+                    <strong id="handState">—</strong>
+                </div>
+                <div class="status-item">
+                    <span>Объект в руке</span>
+                    <strong id="objectState">—</strong>
+                </div>
+                <div class="status-item">
+                    <span>Датчик ладони</span>
+                    <strong id="sensorState">—</strong>
+                </div>
+                <div class="status-item">
+                    <span>Подключение</span>
+                    <strong id="connectionState">—</strong>
+                </div>
+            </div>
 
-      <div class="card controls-card">
-        <h2>Управление</h2>
-        <button id="openButton">Разжать руку</button>
-        <button id="closeButton">Сжать руку</button>
-        <button id="statusButton" class="secondary">Обновить статус</button>
-      </div>
-    </section>
+            <div class="buttons">
+                <button id="openButton">Разжать руку</button>
+                <button id="closeButton">Сжать руку</button>
+                <button id="statusButton" class="secondary">Обновить статус</button>
+            </div>
 
-    <section class="card text-card">
-      <h2>Описание</h2>
-      <p>Рука состоит из четырёх 3D-печатных пальцев. В каждом пальце три фаланги. Сгибание выполняется общей тягой, соединённой с сервоприводом. Разгибание выполняется возвратными пружинами. Кнопка в ладони используется как датчик наличия предмета.</p>
-    </section>
-  </main>
+            <p id="message" class="message">Ожидание команды</p>
+        </section>
+    </main>
 
-  <script src="{{ url_for('static', filename='app.js') }}"></script>
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
 </body>
 </html>
