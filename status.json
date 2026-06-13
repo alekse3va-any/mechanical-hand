@@ -1,0 +1,7 @@
+{
+  "connected": false,
+  "hand": "unknown",
+  "object": "unknown",
+  "sensor": "unknown",
+  "message": "Arduino не подключена"
+}
