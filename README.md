@@ -29,20 +29,6 @@
 | object: yes | объект обнаружен кнопкой в ладони |
 | object: no | объект не обнаружен |
 
-## Структура проекта
-
-```text
-app.py
-requirements.txt
-status.json
-templates/index.html
-static/style.css
-static/app.js
-arduino/mechanical_hand_controller.ino
-docs/
-diagrams/
-hardware/models/README.md
-```
 
 ## Запуск
 
@@ -82,6 +68,3 @@ STATUS
 
 Arduino управляет сервоприводом и возвращает состояние руки и датчика ладони.
 
-## Автор
-
-Алексеева А.
